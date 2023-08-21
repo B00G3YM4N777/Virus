@@ -1,4 +1,4 @@
-name: Checkmarx Scan
+name: CI
 
 on:
   push:
@@ -6,18 +6,23 @@ on:
       - main
 
 jobs:
-  checkmarx-scan:
-    runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: windows-latest
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Build and Test
-        run: |
-          # Insert your build and test commands here
-          
-      - name: Run Checkmarx Scan
-        run: |
-          # Insert Checkmarx scan command here
-          
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+        
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build
+        run: npm run build
+        
+      - name: Test
+        run: npm test
